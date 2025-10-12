@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 15, "column": 0}, "map": {"version":3,"sources":["file:///D:/Hari/studybird/apps/web/src/app/stories/%5Bid%5D/page.tsx"],"sourcesContent":["type Story = { _id: string; title: string; author: string; body: string; createdAt: string };\r\n\r\nasync function getStory(id: string): Promise<Story> {\r\n  const res = await fetch(`/api/stories/${id}`, { cache: \"no-store\" });\r\n  if (!res.ok) throw new Error(\"Not found\");\r\n  return res.json();\r\n}\r\n\r\nexport default async function StoryPage({ params }: { params: { id: string } }) {\r\n  const story = await getStory(params.id);\r\n  return (\r\n    <article className=\"prose dark:prose-invert max-w-3xl\">\r\n      <h1>{story.title}</h1>\r\n      <p className=\"text-sm text-muted-foreground\">by {story.author}</p>\r\n      <hr />\r\n      <div>{story.body}</div>\r\n    </article>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;;AAEA,eAAe,SAAS,EAAU;IAChC,MAAM,MAAM,MAAM,MAAM,CAAC,aAAa,EAAE,IAAI,EAAE;QAAE,OAAO;IAAW;IAClE,IAAI,CAAC,IAAI,EAAE,EAAE,MAAM,IAAI,MAAM;IAC7B,OAAO,IAAI,IAAI;AACjB;AAEe,eAAe,UAAU,EAAE,MAAM,EAA8B;IAC5E,MAAM,QAAQ,MAAM,SAAS,OAAO,EAAE;IACtC,qBACE,4XAAC;QAAQ,WAAU;;0BACjB,4XAAC;0BAAI,MAAM,KAAK;;;;;;0BAChB,4XAAC;gBAAE,WAAU;;oBAAgC;oBAAI,MAAM,MAAM;;;;;;;0BAC7D,4XAAC;;;;;0BACD,4XAAC;0BAAK,MAAM,IAAI;;;;;;;;;;;;AAGtB","debugId":null}}]
+}

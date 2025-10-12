@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 15, "column": 0}, "map": {"version":3,"sources":["file:///D:/Hari/studybird/apps/web/src/app/profile/%5Busername%5D/page.tsx"],"sourcesContent":["export default function ProfilePage({ params }: { params: { username: string } }) {\r\n  return (\r\n    <div className=\"space-y-4\">\r\n      <h1 className=\"text-2xl font-semibold\">@{params.username}</h1>\r\n      <p className=\"text-muted-foreground\">Stories authored, drafts, and favorites will appear here.</p>\r\n    </div>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;;AAAe,SAAS,YAAY,EAAE,MAAM,EAAoC;IAC9E,qBACE,4XAAC;QAAI,WAAU;;0BACb,4XAAC;gBAAG,WAAU;;oBAAyB;oBAAE,OAAO,QAAQ;;;;;;;0BACxD,4XAAC;gBAAE,WAAU;0BAAwB;;;;;;;;;;;;AAG3C","debugId":null}}]
+}
