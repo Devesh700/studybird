@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install": "concurrently \"pnpm --filter client install\" \"pnpm --filter api install\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"pnpm --filter web dev\" \"pnpm --filter api dev\""
+    "dev": "concurrently \"pnpm --filter client dev\" \"pnpm --filter api dev\""
   },
   "keywords": [],
   "author": "",
