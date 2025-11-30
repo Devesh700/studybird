@@ -4,6 +4,13 @@ export type Story = {
   body: string;
   author: string;
   tags: string[];
+  workType: "Story" | "Article" | "Poem";
+  description: string;
+  whatItsAbout: string;
+  originalWork: string;
+  validation: string;
+  suggestedHashtags: string[];
+  categories: string[];
   createdAt: string;
   updatedAt: string;
 };

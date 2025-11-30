@@ -6,11 +6,13 @@ import { api } from "@/lib/api";
 
 export const fetchStories = createAsyncThunk<
   StoriesListResponse,
-  { q?: string; tag?: string; page?: number; limit?: number }
+  { q?: string; tag?: string; category?: string; workType?: string; page?: number; limit?: number }
 >("stories/fetchList", async (params) => {
   const sp = new URLSearchParams();
   if (params.q) sp.set("q", params.q);
   if (params.tag) sp.set("tag", params.tag);
+  if (params.category) sp.set("category", params.category);
+  if (params.workType) sp.set("workType", params.workType);
   if (params.page) sp.set("page", String(params.page));
   if (params.limit) sp.set("limit", String(params.limit));
   const { data } = await api.get<StoriesListResponse>(`/stories?${sp.toString()}`);
@@ -27,7 +29,19 @@ export const fetchStoryById = createAsyncThunk<Story, string>(
 
 export const createStory = createAsyncThunk<
   Story,
-  { title: string; body: string; tags: string[]; author?: string }
+  { 
+    title: string; 
+    body: string; 
+    tags: string[]; 
+    author?: string;
+    workType: "Story" | "Article" | "Poem";
+    description: string;
+    whatItsAbout: string;
+    originalWork?: string;
+    validation?: string;
+    suggestedHashtags: string[];
+    categories: string[];
+  }
 >("stories/create", async (payload) => {
   const { data } = await api.post<Story>("/stories", payload);
   return data;

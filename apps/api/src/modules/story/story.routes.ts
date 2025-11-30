@@ -14,6 +14,10 @@ stories.get("/", async (req, res) => {
   const filter: any = {};
   if (q) filter.$text = { $search: q };
   if (tag) filter.tags = tag;
+  const category = String(req.query.category ?? "").trim();
+  if (category) filter.categories = { $in: [category] }; // Support array matching
+  const workType = String(req.query.workType ?? "").trim();
+  if (workType) filter.workType = workType;
 
   const [items, total] = await Promise.all([
     Story.find(filter)
