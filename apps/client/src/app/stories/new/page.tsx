@@ -294,22 +294,10 @@ export default function NewStoryPage() {
 
             {/* Selected Categories Display */}
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-pink-700">
-                  Selected Categories <span className="text-red-500">*</span>
-                </label>
-                <Button
-                  type="button"
-                  onClick={() => setCategoryModalOpen(true)}
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full border-pink-200 hover:bg-pink-100"
-                >
-                  <Settings className="h-4 w-4 mr-2" />
-                  {selectedCategories.length > 0 ? "Edit Categories" : "Select Categories"}
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2 p-4 bg-white rounded-xl border border-pink-200 min-h-[60px]">
+              <label className="block text-sm font-medium text-pink-700 mb-2">
+                Selected Categories
+              </label>
+              <div className="flex flex-wrap gap-2 p-4 bg-white rounded-xl border border-pink-200">
                 {selectedCategories.length > 0 ? (
                   selectedCategories.map((cat) => (
                     <Badge
@@ -321,21 +309,10 @@ export default function NewStoryPage() {
                     </Badge>
                   ))
                 ) : (
-                  <span className="text-gray-400 text-sm flex items-center">
-                    No categories selected. Click "Select Categories" to choose.
-                  </span>
+                  <span className="text-gray-400 text-sm">No categories selected</span>
                 )}
               </div>
             </div>
-
-            {/* Category Modal */}
-            <CategoryModal
-              open={categoryModalOpen}
-              onOpenChange={setCategoryModalOpen}
-              selectedCategories={selectedCategories}
-              onCategoriesChange={setSelectedCategories}
-              workType={workType}
-            />
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3 justify-center pt-4">
