@@ -9,10 +9,10 @@ interface StoryCardProps {
   title: string;
   author?: string;
   body: string;
-  tag?: string;
+  tags?: string[];
 }
 
-export default function StoryCard({ id, title, author, body, tag }: StoryCardProps) {
+export default function StoryCard({ id, title, author, body, tags }: StoryCardProps) {
   // Generate a short excerpt from story body
   const excerpt = useMemo(() => {
     const clean = body?.replace(/\n/g, " ").trim();
@@ -39,11 +39,11 @@ export default function StoryCard({ id, title, author, body, tag }: StoryCardPro
 
         {/* Tag & Button Row */}
         <div className="flex items-center justify-between mt-4">
-          {tag && (
+          {tags && tags?.map((tag)=>(
             <span className="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full font-medium">
               #{tag}
             </span>
-          )}
+          ))}
           <Link
             href={`/stories/${id}`}
             className="text-sm font-medium text-pink-600 hover:text-pink-700 transition-colors"

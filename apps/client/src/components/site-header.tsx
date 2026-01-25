@@ -62,7 +62,7 @@ export function SiteHeader() {
       icon: <Palette className="h-4 w-4 text-purple-500" />,
       children: [
         { label: "Culinary", href: "/culinary", icon: <Brush className="h-4 w-4" /> },
-        { label: "Art Gallery", href: "/gallery", icon: <ImageIcon className="h-4 w-4" /> },
+        { label: "Art Gallery", href: "/drawing", icon: <ImageIcon className="h-4 w-4" /> },
         { label: "Motor Skills", href: "/motor-skills", icon: <Paintbrush2 className="h-4 w-4" /> },
       ],
     },

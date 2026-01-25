@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import ExplorePage from "./ExplorePage";
+import ListeningPage from "./ListeningPage";
 
-export default function Explore() {
+export default function Listening() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ExplorePage/>
+      <ListeningPage />
     </Suspense>
   )
-} 
+}

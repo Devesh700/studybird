@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./db";
 import { stories } from "./modules/story/story.routes";
+import { audioStories } from "./modules/audio-story/audio-story.route";
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,8 @@ app.use(cors({ origin, credentials: true }));
 
 app.get("/", (_req, res) => res.json({ message: "API running" }));
 app.use("/stories", stories);
+app.use("/audio-stories", audioStories);
+
 
 const PORT = Number(process.env.PORT || 5000);
 
