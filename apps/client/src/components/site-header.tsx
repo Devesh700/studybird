@@ -131,7 +131,8 @@ export function SiteHeader() {
 
                 {/* Dropdown */}
                 {hovered === item.label && (
-                  <div className="absolute left-0 mt-2 bg-white border border-pink-100 rounded-2xl shadow-lg py-2 w-48 animate-fadeIn z-50">
+                  <div className="absolute left-0 pt-2  w-48 animate-fadeIn z-50">
+                  <div className=" bg-white border border-pink-100 rounded-2xl shadow-lg py-2">
                     {item.children.map((child) => (
                       <Link
                         key={child.label}
@@ -142,6 +143,7 @@ export function SiteHeader() {
                         {child.label}
                       </Link>
                     ))}
+                  </div>
                   </div>
                 )}
               </div>
