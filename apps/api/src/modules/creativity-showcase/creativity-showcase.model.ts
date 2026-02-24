@@ -18,6 +18,8 @@ const CreativityShowcaseSchema = new Schema({
   isPublic: { type: Boolean, default: true },
 }, { timestamps: true });
 
+CreativityShowcaseSchema.index({ title: "text", description: "text", creatorName: "text", tags: "text" });
+
 export type CreativityShowcaseDoc = {
   _id: string;
   title: string;

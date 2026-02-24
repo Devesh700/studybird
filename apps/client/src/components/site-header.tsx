@@ -2,51 +2,30 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Menu,
-  PenTool,
-  Home,
-  Compass,
-  Palette,
-  Trophy,
-  NewspaperIcon,
-  HelpCircle,
-  BookText,
-  Mail,
-  Feather,
-  Brush,
-  ImageIcon,
-  Paintbrush2,
-  Ticket,
-  Voicemail,
-  VideoIcon,
-} from "lucide-react";
+import { Menu, PenTool, Palette, Trophy, BookText, Feather, Brush, ImageIcon, Paintbrush2, Ticket, Voicemail, VideoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { logout } from "@/features/auth/auth.slice";
+import { selectIsAdmin, selectIsAuthenticated } from "@/features/auth/auth.selectors";
 
 export interface NavItem {
   href?: string;
   label: string;
   icon?: React.ReactNode;
-  children?:NavItem[];
+  children?: NavItem[];
 }
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const isAdmin = useAppSelector(selectIsAdmin);
 
-  const navItems:NavItem[] = [
-    // { href: "/", label: "Home", icon: <Home className="h-4 w-4 text-pink-500" /> },
-    // { href: "/explore", label: "Explore", icon: <Compass className="h-4 w-4 text-yellow-500" /> },
+  const navItems: NavItem[] = [
     {
       label: "Communication",
       icon: <PenTool className="h-4 w-4 text-blue-500" />,
@@ -83,7 +62,6 @@ export function SiteHeader() {
         { label: "Customized", href: "/customized", icon: <Paintbrush2 className="h-4 w-4" /> },
       ],
     },
-
     {
       label: "Personality Development",
       icon: <Ticket className="h-4 w-4 text-blue-500" />,
@@ -93,22 +71,15 @@ export function SiteHeader() {
         { label: "Presentations", href: "/presentations", icon: <Paintbrush2 className="h-4 w-4" /> },
       ],
     },
-    // { href: "/blog", label: "Blog", icon: <NewspaperIcon className="h-4 w-4 text-green-500" /> },
-    // { href: "/help", label: "Help", icon: <HelpCircle className="h-4 w-4 text-red-500" /> },
   ];
 
   return (
     <header className="sticky top-0 z-50 border-b bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 shadow-sm backdrop-blur-md">
-      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        {/* Left Logo */}
-        <Link
-          href="/"
-          className="text-2xl font-bold text-pink-600 hover:text-pink-700 transition-all"
-        >
-          ✨ Storybird
+      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+        <Link href="/" className="text-2xl font-bold text-pink-600 hover:text-pink-700 transition-all">
+          Storybird
         </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-4 ml-8 relative">
           {navItems.map((item) =>
             item.children ? (
@@ -129,28 +100,27 @@ export function SiteHeader() {
                   {item.label}
                 </button>
 
-                {/* Dropdown */}
                 {hovered === item.label && (
-                  <div className="absolute left-0 pt-2  w-48 animate-fadeIn z-50">
-                  <div className=" bg-white border border-pink-100 rounded-2xl shadow-lg py-2">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.label}
-                        href={child.href ?? "/"}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-pink-700 hover:bg-pink-100 transition-all"
-                      >
-                        {child.icon ?? ""}
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
+                  <div className="absolute left-0 pt-2 w-48 animate-fadeIn z-50">
+                    <div className="bg-white border border-pink-100 rounded-2xl shadow-lg py-2">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.label}
+                          href={child.href ?? "/"}
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-pink-700 hover:bg-pink-100 transition-all"
+                        >
+                          {child.icon ?? ""}
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
             ) : (
               <Link
                 key={item.href}
-                href={item.href!}
+                href={item.href ?? "/"}
                 className={cn(
                   "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all hover:bg-pink-200",
                   pathname === item.href && "bg-pink-300 text-pink-900"
@@ -163,22 +133,30 @@ export function SiteHeader() {
           )}
         </nav>
 
-        {/* Right Section */}
-        {/* <div className="hidden md:flex items-center gap-4">
-          <Input
-            placeholder="🔍 Search stories..."
-            className="w-64 rounded-full border-pink-200 bg-white shadow-inner focus:ring-2 focus:ring-pink-300"
-          />
+        <div className="hidden md:flex items-center gap-2 ml-4">
+          {!isAuthenticated ? (
+            <>
+              <Button asChild variant="outline" className="rounded-full">
+                <Link href="/login">Login</Link>
+              </Button>
+              <Button asChild className="rounded-full bg-pink-500 hover:bg-pink-600 text-white">
+                <Link href="/signup">Sign Up</Link>
+              </Button>
+            </>
+          ) : (
+            <>
+              {isAdmin ? (
+                <Button asChild variant="outline" className="rounded-full">
+                  <Link href={location.pathname === "/admin" ? "/" : "/admin"}>{location.pathname === "/admin" ? "Website" : "Admin Panel"}</Link>
+                </Button>
+              ) : null}
+              <Button variant="outline" className="rounded-full" onClick={() => dispatch(logout())}>
+                Logout
+              </Button>
+            </>
+          )}
+        </div>
 
-          <Button
-            asChild
-            className="rounded-full bg-pink-500 hover:bg-pink-600 text-white px-5"
-          >
-            <Link href="/stories/new">✏️ Write</Link>
-          </Button>
-        </div> */}
-
-        {/* Mobile Menu */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -197,11 +175,7 @@ export function SiteHeader() {
                       </span>
                       <div className="ml-6 mt-1 flex flex-col gap-1">
                         {item.children.map((child) => (
-                          <Link
-                            key={child.label}
-                            href={child.href ?? "/"}
-                            className="text-sm text-pink-600 hover:underline"
-                          >
+                          <Link key={child.label} href={child.href ?? "/"} className="text-sm text-pink-600 hover:underline">
                             {child.label}
                           </Link>
                         ))}
@@ -210,7 +184,7 @@ export function SiteHeader() {
                   ) : (
                     <Link
                       key={item.href}
-                      href={item.href!}
+                      href={item.href ?? "/"}
                       className="flex items-center gap-2 px-4 py-2 rounded-full text-pink-700 hover:bg-pink-200 transition-all"
                     >
                       {item.icon}
@@ -218,6 +192,30 @@ export function SiteHeader() {
                     </Link>
                   )
                 )}
+
+                <div className="border-t border-pink-200 pt-3 mt-2 flex flex-col gap-2">
+                  {!isAuthenticated ? (
+                    <>
+                      <Link href="/login" className="text-sm text-pink-700 hover:underline">
+                        Login
+                      </Link>
+                      <Link href="/signup" className="text-sm text-pink-700 hover:underline">
+                        Sign Up
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {isAdmin ? (
+                        <Link href="/" className="text-sm text-pink-700 hover:underline">
+                          Website
+                        </Link>
+                      ) : null}
+                      <button className="text-left text-sm text-pink-700 hover:underline" onClick={() => dispatch(logout())}>
+                        Logout
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </SheetContent>
           </Sheet>
@@ -246,8 +244,8 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="border-t mt-12 bg-gradient-to-r from-pink-50 to-blue-50">
-      <div className="mx-auto max-w-6xl px-4 py-6 text-center text-sm text-pink-700">
-        © {new Date().getFullYear()} Storybird Clone • Made with 💖 for kids
+      <div className="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-pink-700">
+        Copyright {new Date().getFullYear()} Storybird Clone
       </div>
     </footer>
   );

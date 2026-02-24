@@ -15,6 +15,8 @@ const AudioStorySchema = new Schema({
   isPublic: { type: Boolean, default: true },
 }, { timestamps: true });
 
+AudioStorySchema.index({ title: "text", description: "text", author: "text", tags: "text" });
+
 export type AudioStoryDoc = {
   _id: string;
   title: string;

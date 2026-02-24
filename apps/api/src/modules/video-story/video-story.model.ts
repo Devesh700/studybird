@@ -14,6 +14,8 @@ const VideoStorySchema = new Schema({
   isPublic: { type: Boolean, default: true },
 }, { timestamps: true });
 
+VideoStorySchema.index({ title: "text", description: "text", author: "text", tags: "text" });
+
 export type VideoStoryDoc = {
   _id: string;
   title: string;

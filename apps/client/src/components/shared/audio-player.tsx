@@ -82,7 +82,7 @@ export default function GlobalAudioPlayer() {
       animate={{ y: 0, opacity: 1 }}
       className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 text-white shadow-2xl z-50 border-t-4 border-rose-500/50 backdrop-blur-xl"
     >
-      <div className="max-w-6xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center gap-4">
           {/* Thumbnail */}
           <div className="relative">

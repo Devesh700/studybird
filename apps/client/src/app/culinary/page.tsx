@@ -71,7 +71,7 @@ export default function CreativityCornerPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-16">
-          <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-2xl rounded-3xl p-2 shadow-2xl border-0 gap-2 max-w-6xl mx-auto">
+          <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-2xl rounded-3xl p-2 shadow-2xl border-0 gap-2 max-w-7xl mx-auto">
             {SKILL_CATEGORIES.map(({ value, label, icon: Icon, color }) => (
               <TabsTrigger 
                 key={value}

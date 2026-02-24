@@ -120,7 +120,7 @@ export default function DrawingCanvas() {
   if(!windowLoaded) return <AnimatePresence></AnimatePresence>;
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
