@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 const origin = process.env.CORS_ORIGIN || "http://localhost:3000";
-app.use(cors({ origin, credentials: true }));
+app.use(cors({ origin:["*"], credentials: true }));
 
 app.get("/", (_req, res) => res.json({ message: "API running" }));
 app.use("/stories", stories);
