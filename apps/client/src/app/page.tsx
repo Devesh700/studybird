@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, AudioLines, HeartPulse, Sparkles, UserRoundCheck } from "lucide-react";
+import { ArrowRight, HeartPulse, Sparkles, UserRoundCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -97,19 +97,6 @@ export default function Page() {
         </Card>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-2">
-        <Card className="border-slate-200">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AudioLines className="h-5 w-5 text-indigo-700" /> About & Support
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm text-slate-700">
-            <p>About Us - Vision & Mission - Community Values</p>
-            <p>Help & FAQs - Contact Us - Privacy & Safety Policy - Terms & Conditions</p>
-          </CardContent>
-        </Card>
-      </section>
     </div>
   );
 }
