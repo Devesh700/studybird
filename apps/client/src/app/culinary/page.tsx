@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Palette, BookOpen, Utensils, Music, Sparkles } from "lucide-react";
+import { Star, Utensils, Sparkles } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,9 +28,6 @@ export default function CreativityCornerPage() {
   const SKILL_CATEGORIES = [
     { value: "featured", label: "⭐ Featured", icon: Star, color: "bg-gradient-to-r from-yellow-400 to-orange-400" },
     { value: "cooking", label: "🍳 Cooking", icon: Utensils, color: "bg-gradient-to-r from-orange-500 to-red-500" },
-    { value: "reading", label: "📚 Reading", icon: BookOpen, color: "bg-gradient-to-r from-blue-500 to-indigo-500" },
-    { value: "art", label: "🎨 Art", icon: Palette, color: "bg-gradient-to-r from-purple-500 to-pink-500" },
-    { value: "music", label: "🎵 Music", icon: Music, color: "bg-gradient-to-r from-emerald-500 to-teal-500" },
   ];
 
   const getCategoryColor = (category: string) => {
@@ -54,7 +51,7 @@ export default function CreativityCornerPage() {
                 Creativity Corner
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Show the world your amazing skills! 👏 Cooking, art, reading, music - 
+                Show the world your amazing skills! 👏 Cooking - 
                 <br className="md:hidden" /> share your talents and inspire others ✨
               </p>
             </div>
@@ -71,7 +68,7 @@ export default function CreativityCornerPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-16">
-          <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-2xl rounded-3xl p-2 shadow-2xl border-0 gap-2 max-w-7xl mx-auto">
+          <TabsList className="grid w-full grid-cols-2 bg-white/80 backdrop-blur-2xl rounded-3xl p-2 shadow-2xl border-0 gap-2 max-w-7xl mx-auto">
             {SKILL_CATEGORIES.map(({ value, label, icon: Icon, color }) => (
               <TabsTrigger 
                 key={value}
@@ -169,3 +166,4 @@ export default function CreativityCornerPage() {
     </div>
   );
 }
+

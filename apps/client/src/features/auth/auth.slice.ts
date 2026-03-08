@@ -26,12 +26,26 @@ type AuthState = {
 
 const TOKEN_KEY = "token";
 
+function saveTokenCookie(token: string) {
+  if (typeof document !== "undefined") {
+    document.cookie = `${TOKEN_KEY}=${encodeURIComponent(token)}; path=/; max-age=604800; samesite=lax`;
+  }
+}
+
+function clearTokenCookie() {
+  if (typeof document !== "undefined") {
+    document.cookie = `${TOKEN_KEY}=; path=/; max-age=0; samesite=lax`;
+  }
+}
+
 function saveToken(token: string) {
   if (typeof window !== "undefined") localStorage.setItem(TOKEN_KEY, token);
+  saveTokenCookie(token);
 }
 
 function clearToken() {
   if (typeof window !== "undefined") localStorage.removeItem(TOKEN_KEY);
+  clearTokenCookie();
 }
 
 function getStoredToken() {

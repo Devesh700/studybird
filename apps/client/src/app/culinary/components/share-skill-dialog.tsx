@@ -73,8 +73,8 @@ export default function ShareSkillDialog({ open, onOpenChange }: any) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2 text-muted-foreground">Skill Category</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {['cooking', 'reading', 'art'].map(cat => (
+                <div className="grid grid-cols-1 gap-2">
+                  {['cooking'].map(cat => (
                     <Badge key={cat} variant={form.watch("skillCategory") === cat ? "default" : "outline"} className="cursor-pointer p-3 h-16 rounded-2xl justify-center">
                       {cat.charAt(0).toUpperCase() + cat.slice(1)}
                     </Badge>

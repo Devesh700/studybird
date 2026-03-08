@@ -39,8 +39,8 @@ export default function StoryCard({ id, title, author, body, tags }: StoryCardPr
 
         {/* Tag & Button Row */}
         <div className="flex items-center justify-between mt-4">
-          {tags && tags?.map((tag)=>(
-            <span className="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full font-medium">
+          {tags && tags?.map((tag, index) => (
+            <span key={`${tag}-${index}`} className="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full font-medium">
               #{tag}
             </span>
           ))}

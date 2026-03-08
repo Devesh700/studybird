@@ -5,6 +5,7 @@ import {
   createUser,
   getUserById,
   hardDeleteUserById,
+  listUsers,
   softDeleteUserById,
   updateUserById,
 } from "./user.service";
@@ -60,6 +61,19 @@ export async function getUserHandler(req: Request, res: Response) {
   try {
     const user = await getUserById(req.params.id);
     res.json(user);
+  } catch (error) {
+    res.status(getStatus(error)).json({ error: getMessage(error) });
+  }
+}
+
+export async function listUsersHandler(req: Request, res: Response) {
+  try {
+    const page = Math.max(parseInt(String(req.query.page ?? "1"), 10), 1);
+    const limit = Math.min(Math.max(parseInt(String(req.query.limit ?? "10"), 10), 1), 50);
+    const q = String(req.query.q ?? "").trim();
+
+    const result = await listUsers({ page, limit, q });
+    res.json(result);
   } catch (error) {
     res.status(getStatus(error)).json({ error: getMessage(error) });
   }

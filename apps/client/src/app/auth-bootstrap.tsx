@@ -9,6 +9,10 @@ export default function AuthBootstrap() {
   const { accessToken, initialized } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
+    if (accessToken && typeof document !== "undefined") {
+      document.cookie = `token=${encodeURIComponent(accessToken)}; path=/; max-age=604800; samesite=lax`;
+    }
+
     if (!initialized && accessToken) {
       dispatch(fetchMe());
       return;

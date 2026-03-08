@@ -1,15 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, PenTool, Palette, Trophy, BookText, Feather, Brush, ImageIcon, Paintbrush2, Ticket, Voicemail, VideoIcon } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  Menu,
+  BookOpenText,
+  Lightbulb,
+  Trophy,
+  HeartPulse,
+  Users,
+  House,
+  Info,
+  LifeBuoy,
+  BookText,
+  Brush,
+  Mic2,
+  ImageIcon,
+  Utensils,
+  LogIn,
+  UserCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout } from "@/features/auth/auth.slice";
-import { selectIsAdmin, selectIsAuthenticated } from "@/features/auth/auth.selectors";
+import { selectAuthUser, selectIsAdmin, selectIsAuthenticated } from "@/features/auth/auth.selectors";
 
 export interface NavItem {
   href?: string;
@@ -20,55 +37,109 @@ export interface NavItem {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const [hovered, setHovered] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const dispatch = useAppDispatch();
+  const authUser = useAppSelector(selectAuthUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const isAdmin = useAppSelector(selectIsAdmin);
+  const profileSlug = (authUser?.name ?? "me").trim().toLowerCase().replace(/\s+/g, "-");
+  const accountHref = `/profile/${encodeURIComponent(profileSlug || "me")}`;
+  const isAdminRoute = pathname.startsWith("/admin");
+  const adminPortalHref = isAdminRoute ? "/" : "/admin";
+  const adminPortalLabel = isAdminRoute ? "Website" : "Admin Panel";
+  const getProtectedHref = (href?: string) =>
+    isAuthenticated ? (href ?? "/") : `/login?next=${encodeURIComponent(href ?? "/")}`;
+  const handleLogout = () => {
+    dispatch(logout());
+    router.replace("/");
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (isAdminRoute) {
+    return null;
+  }
 
   const navItems: NavItem[] = [
     {
-      label: "Communication",
-      icon: <PenTool className="h-4 w-4 text-blue-500" />,
+      label: "Explore",
+      icon: <BookOpenText className="h-4 w-4 text-blue-500" />,
       children: [
-        { label: "Writing", href: "/stories/new", icon: <Feather className="h-4 w-4" /> },
-        { label: "Reading", href: "/explore", icon: <BookText className="h-4 w-4" /> },
-        { label: "Listening", href: "/listening", icon: <Voicemail className="h-4 w-4" /> },
-        { label: "Watching", href: "/watching", icon: <VideoIcon className="h-4 w-4" /> },
-      ],
-    },
-    {
-      label: "Creativity Corner",
-      icon: <Palette className="h-4 w-4 text-purple-500" />,
-      children: [
-        { label: "Culinary", href: "/culinary", icon: <Brush className="h-4 w-4" /> },
+        { label: "Read", href: "/explore", icon: <BookText className="h-4 w-4" /> },
+        { label: "Listen", href: "/listening", icon: <Mic2 className="h-4 w-4" /> },
         { label: "Art Gallery", href: "/drawing", icon: <ImageIcon className="h-4 w-4" /> },
-        { label: "Motor Skills", href: "/motor-skills", icon: <Paintbrush2 className="h-4 w-4" /> },
+        { label: "Recipes & Experiments", href: "/culinary", icon: <Utensils className="h-4 w-4" /> },
+        { label: "Well-Being Library", href: "/explore", icon: <HeartPulse className="h-4 w-4" /> },
       ],
     },
     {
-      label: "Wellness",
-      icon: <Trophy className="h-4 w-4 text-amber-500" />,
+      label: "Create & Submit",
+      icon: <Lightbulb className="h-4 w-4 text-amber-500" />,
       children: [
-        { label: "Physical", href: "/physical" },
-        { label: "Mental", href: "/mental" },
+        { label: "Written Submission", href: "/stories/new", icon: <BookText className="h-4 w-4" /> },
+        { label: "Artwork Upload", href: "/drawing", icon: <Brush className="h-4 w-4" /> },
+        { label: "Audio Upload", href: "/listening", icon: <Mic2 className="h-4 w-4" /> },
+        { label: "Submission Guidelines", href: "/stories/new", icon: <BookOpenText className="h-4 w-4" /> },
       ],
     },
     {
-      label: "Printables",
-      icon: <Palette className="h-4 w-4 text-purple-500" />,
+      label: "Events & Challenges",
+      icon: <Trophy className="h-4 w-4 text-rose-500" />,
       children: [
-        { label: "Worksheet", href: "/worksheet", icon: <Brush className="h-4 w-4" /> },
-        { label: "Art Work", href: "/art", icon: <ImageIcon className="h-4 w-4" /> },
-        { label: "Customized", href: "/customized", icon: <Paintbrush2 className="h-4 w-4" /> },
+        { label: "Ongoing Events", href: "/explore" },
+        { label: "Upcoming Events", href: "/explore" },
+        { label: "Past Highlights", href: "/explore" },
+        { label: "Certificates", href: "/explore" },
       ],
     },
     {
-      label: "Personality Development",
-      icon: <Ticket className="h-4 w-4 text-blue-500" />,
+      label: "Well-Being",
+      icon: <HeartPulse className="h-4 w-4 text-emerald-600" />,
       children: [
-        { label: "On Stage", href: "/on-stage", icon: <Brush className="h-4 w-4" /> },
-        { label: "Talking Tactics", href: "/talkin-tactics", icon: <ImageIcon className="h-4 w-4" /> },
-        { label: "Presentations", href: "/presentations", icon: <Paintbrush2 className="h-4 w-4" /> },
+        { label: "Physical Well-Being", href: "/explore" },
+        { label: "Mental & Emotional", href: "/explore" },
+        { label: "Audio Wellness", href: "/listening" },
+      ],
+    },
+    {
+      label: "Mentors",
+      icon: <Users className="h-4 w-4 text-cyan-700" />,
+      children: [
+        { label: "Mentor Categories", href: "/mentors" },
+        { label: "Mentor Profiles", href: "/mentors" },
+        { label: "Request Guidance", href: "/mentors" },
+      ],
+    },
+    {
+      label: "Parent Corner",
+      icon: <House className="h-4 w-4 text-violet-600" />,
+      children: [
+        { label: "Platform Overview", href: "/parent-corner" },
+        { label: "Safety & Moderation", href: "/parent-corner" },
+        { label: "Permissions & Controls", href: "/parent-corner" },
+      ],
+    },
+    {
+      label: "About",
+      icon: <Info className="h-4 w-4 text-slate-600" />,
+      children: [
+        { label: "About Us", href: "/about" },
+        { label: "Vision & Mission", href: "/about" },
+        { label: "Community Values", href: "/about" },
+      ],
+    },
+    {
+      label: "Support",
+      icon: <LifeBuoy className="h-4 w-4 text-indigo-600" />,
+      children: [
+        { label: "Help & FAQs", href: "/support" },
+        { label: "Contact Us", href: "/support" },
+        { label: "Privacy & Safety", href: "/support" },
+        { label: "Terms & Conditions", href: "/support" },
       ],
     },
   ];
@@ -106,7 +177,7 @@ export function SiteHeader() {
                       {item.children.map((child) => (
                         <Link
                           key={child.label}
-                          href={child.href ?? "/"}
+                          href={getProtectedHref(child.href)}
                           className="flex items-center gap-2 px-4 py-2 text-sm text-pink-700 hover:bg-pink-100 transition-all"
                         >
                           {child.icon ?? ""}
@@ -120,7 +191,7 @@ export function SiteHeader() {
             ) : (
               <Link
                 key={item.href}
-                href={item.href ?? "/"}
+                href={getProtectedHref(item.href)}
                 className={cn(
                   "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all hover:bg-pink-200",
                   pathname === item.href && "bg-pink-300 text-pink-900"
@@ -134,23 +205,31 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2 ml-4">
-          {!isAuthenticated ? (
+          {!mounted ? null : !isAuthenticated ? (
             <>
-              <Button asChild variant="outline" className="rounded-full">
-                <Link href="/login">Login</Link>
-              </Button>
-              <Button asChild className="rounded-full bg-pink-500 hover:bg-pink-600 text-white">
-                <Link href="/signup">Sign Up</Link>
+              <Button asChild className="rounded-full bg-gradient-to-r from-pink-500 to-rose-500 font-semibold text-white shadow-md transition-all hover:from-pink-600 hover:to-rose-600 hover:shadow-lg">
+                <Link href="/login">
+                  <LogIn className="h-4 w-4" />
+                  Login
+                </Link>
               </Button>
             </>
           ) : (
             <>
               {isAdmin ? (
                 <Button asChild variant="outline" className="rounded-full">
-                  <Link href={location.pathname === "/admin" ? "/" : "/admin"}>{location.pathname === "/admin" ? "Website" : "Admin Panel"}</Link>
+                  <Link href={adminPortalHref}>{adminPortalLabel}</Link>
                 </Button>
               ) : null}
-              <Button variant="outline" className="rounded-full" onClick={() => dispatch(logout())}>
+              {!isAdmin && !isAdminRoute ? (
+                <Button asChild variant="outline" className="rounded-full">
+                  <Link href={accountHref}>
+                    <UserCircle className="h-4 w-4" />
+                    Account
+                  </Link>
+                </Button>
+              ) : null}
+              <Button variant="outline" className="rounded-full" onClick={handleLogout}>
                 Logout
               </Button>
             </>
@@ -175,7 +254,7 @@ export function SiteHeader() {
                       </span>
                       <div className="ml-6 mt-1 flex flex-col gap-1">
                         {item.children.map((child) => (
-                          <Link key={child.label} href={child.href ?? "/"} className="text-sm text-pink-600 hover:underline">
+                          <Link key={child.label} href={getProtectedHref(child.href)} className="text-sm text-pink-600 hover:underline">
                             {child.label}
                           </Link>
                         ))}
@@ -184,7 +263,7 @@ export function SiteHeader() {
                   ) : (
                     <Link
                       key={item.href}
-                      href={item.href ?? "/"}
+                      href={getProtectedHref(item.href)}
                       className="flex items-center gap-2 px-4 py-2 rounded-full text-pink-700 hover:bg-pink-200 transition-all"
                     >
                       {item.icon}
@@ -194,23 +273,28 @@ export function SiteHeader() {
                 )}
 
                 <div className="border-t border-pink-200 pt-3 mt-2 flex flex-col gap-2">
-                  {!isAuthenticated ? (
+                  {!mounted ? null : !isAuthenticated ? (
                     <>
                       <Link href="/login" className="text-sm text-pink-700 hover:underline">
-                        Login
-                      </Link>
-                      <Link href="/signup" className="text-sm text-pink-700 hover:underline">
-                        Sign Up
+                        <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 px-3 py-1.5 font-medium text-white">
+                          <LogIn className="h-3.5 w-3.5" />
+                          Login
+                        </span>
                       </Link>
                     </>
                   ) : (
                     <>
                       {isAdmin ? (
-                        <Link href="/" className="text-sm text-pink-700 hover:underline">
-                          Website
+                        <Link href={adminPortalHref} className="text-sm text-pink-700 hover:underline">
+                          {adminPortalLabel}
                         </Link>
                       ) : null}
-                      <button className="text-left text-sm text-pink-700 hover:underline" onClick={() => dispatch(logout())}>
+                      {!isAdmin && !isAdminRoute ? (
+                        <Link href={accountHref} className="text-sm text-pink-700 hover:underline">
+                          Account
+                        </Link>
+                      ) : null}
+                      <button className="text-left text-sm text-pink-700 hover:underline" onClick={handleLogout}>
                         Logout
                       </button>
                     </>

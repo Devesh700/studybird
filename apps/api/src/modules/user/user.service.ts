@@ -18,6 +18,12 @@ type UpdateUserInput = {
   roles?: string[];
 };
 
+type ListUsersInput = {
+  page?: number;
+  limit?: number;
+  q?: string;
+};
+
 function toPublicUser(user: any) {
   return {
     _id: String(user._id),
@@ -31,6 +37,39 @@ function toPublicUser(user: any) {
     lastLoginAt: user.lastLoginAt ?? null,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
+  };
+}
+
+export async function listUsers(input: ListUsersInput = {}) {
+  const page = Math.max(input.page ?? 1, 1);
+  const limit = Math.min(Math.max(input.limit ?? 10, 1), 50);
+  const q = (input.q ?? "").trim();
+
+  const filter: Record<string, unknown> = { isDeleted: false };
+  if (q) {
+    filter.$or = [
+      { name: { $regex: q, $options: "i" } },
+      { email: { $regex: q, $options: "i" } },
+      { roles: { $in: [q.toLowerCase()] } },
+    ];
+  }
+
+  const [items, total] = await Promise.all([
+    User.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean()
+      .exec(),
+    User.countDocuments(filter).exec(),
+  ]);
+
+  return {
+    items: items.map(toPublicUser),
+    page,
+    limit,
+    total,
+    totalPages: Math.max(Math.ceil(total / limit), 1),
   };
 }
 
